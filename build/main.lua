@@ -6,6 +6,15 @@ local void = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 local first_position_player = {0x1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 local cross = {0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81}
 
+--local food_1 = {0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x0} 
+--local food_2 = {0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0} 
+--local food_2 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0} 
+
+local food_on_board = false
+
+local or_dict = {}
+
+
 local btn1 = 0
 local btn2 = 6
 
@@ -37,7 +46,8 @@ display.write(go_phrase)
 tmr.create():alarm(300, tmr.ALARM_AUTO, function()
     if game_status >= 0 then
         if(top_down == true or down_top == true) then
-            print("Sono top_down")
+            --Bebug Print: (No decomment this)
+            --print("Sono top_down")
             if gpio.read(btn1) == 0 then
                 tmr.create():alarm(30, tmr.ALARM_SINGLE, function()
                     if(gpio.read(btn1) == 0) then
@@ -70,7 +80,8 @@ tmr.create():alarm(300, tmr.ALARM_AUTO, function()
     end
 
     if(left_right == true or right_left == true) then
-        print("Sono left_right")
+        --Bebug Print: (No decomment this)
+        --print("Sono left_right")
         if gpio.read(btn1) == 0 then
             tmr.create():alarm(30, tmr.ALARM_SINGLE, function()
                 if(gpio.read(btn1) == 0) then
@@ -121,7 +132,8 @@ tmr.create():alarm(500, tmr.ALARM_AUTO, function()
         if(top_down == true) then 
             --Movimento dall'alto verso il basso, aumenta lo stesso valore esadecimale moltiplicando x2 
             first_position_player[cont_top_down] = first_position_player[cont_top_down]*2
-            print(first_position_player[cont_top_down])
+            --Bebug Print: (No decomment this)
+            --print(first_position_player[cont_top_down])
             display.write(first_position_player)
             if first_position_player[cont_top_down] > 128 then
                 game_status = -1
@@ -132,7 +144,8 @@ tmr.create():alarm(500, tmr.ALARM_AUTO, function()
         if(down_top == true) then 
             --Movimento dall'alto verso il basso, aumenta lo stesso valore esadecimale moltiplicando x2 
             first_position_player[cont_top_down] = first_position_player[cont_top_down]/2
-            print(first_position_player[cont_top_down])
+            --Bebug Print: (No decomment this)
+            --print(first_position_player[cont_top_down])
             display.write(first_position_player)
             if first_position_player[cont_top_down] < 1 then
                 game_status = -1
@@ -144,8 +157,10 @@ tmr.create():alarm(500, tmr.ALARM_AUTO, function()
         if(left_right == true) then 
             --Movimento da sinisgtra verso destra, vieni shiftato verso destra(da fondo verso cima) il bite
             --con valore diverso da 0 es( 0x01 viene spostato a destra e la sua posizione viene occupata con 0x00)
-            print(first_position_player[cont_left_right])
-            print(first_position_player[cont_left_right]+1)
+
+            --Bebug Print: (No decomment this)
+            --print(first_position_player[cont_left_right])
+            --print(first_position_player[cont_left_right]+1)
             first_position_player[cont_left_right+1] = first_position_player[cont_left_right]
             first_position_player[cont_left_right] = 0x00
             cont_top_down = cont_top_down+1
@@ -160,8 +175,10 @@ tmr.create():alarm(500, tmr.ALARM_AUTO, function()
         if(right_left == true) then 
             --Movimento da sinisgtra verso destra, vieni shiftato verso destra(da fondo verso cima) il bite
             --con valore diverso da 0 es( 0x01 viene spostato a destra e la sua posizione viene occupata con 0x00)
-            print(first_position_player[cont_left_right])
-            print(first_position_player[cont_left_right]-1)
+            
+            --Bebug Print: (No decomment this)
+            --print(first_position_player[cont_left_right])
+            --print(first_position_player[cont_left_right]-1)
             first_position_player[cont_left_right-1] = first_position_player[cont_left_right]
             first_position_player[cont_left_right] = 0x00
             cont_top_down = cont_top_down-1
@@ -175,3 +192,13 @@ tmr.create():alarm(500, tmr.ALARM_AUTO, function()
         
     end    
 end)
+
+--tmr.create():alarm(500, tmr.ALARM_AUTO, function()
+    --Add food on matrix
+  --  if(food_on_board == false) then
+    --    for i = 1,8 do
+            --or_dict.append(bit.bor(first_position_player[i],food_1[i])+", ") 
+      --      food_on_board = true
+        --end
+    --end
+--end)
